@@ -18,6 +18,7 @@ The firmware can be compiled using the mBed online compiler.
 * RC tyres. ID: X, width: Y
 * 2 x lengths of 12MM OD carbon fiber tubing. 
 * 12 x 6mm M3 screws
+* 6 x 20mm M3 screws
 * 4 x M4 set screws
 * 1 x Inventor’s KIT for BBC micro:bit + optional (Kitronic)
 * 1 x Perma Proto Half-sized Breadboard (Adafruit)

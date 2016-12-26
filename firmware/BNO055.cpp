@@ -16,8 +16,7 @@ Sensor::Sensor(MicroBit & bit) :
  }
  
  /*
- *  Writes out accelerometer/gyro and magnetometer device IDs to the serial port. 
- *  This is just a sanity check. If you get a 104 (0x68) / 61 (0x3D) response, you're good to go.
+ *  This is just a sanity check. Verfies chip/accelerometer/magnetometer and gyro id.
  */
 void Sensor::LogDeviceId()
 {

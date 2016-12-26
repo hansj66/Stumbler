@@ -109,13 +109,7 @@ void Sensor::SelectPage(uint8_t page)
 {
     if (page != _currentPage)
     {
-        char cmd[2];
-        cmd[0] = PAGE_ID_REGISTER;
-        if (page == 1) {
-            cmd[1] = 1;  // select page 1
-        } else {
-            cmd[1] = 0;  // select page 0
-        }
+        char cmd[2] = {PAGE_ID_REGISTER, page};
         _bit.i2c.write(_I2CAddress, cmd, 2, false);
         _currentPage = page; // Happy path ;)
     }

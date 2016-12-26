@@ -1,9 +1,15 @@
-# Stumbler
+﻿# Stumbler
 3D Printed self balancing robot. Hardware stack consist of a BBC Micro:Bit, DRV882, LSM9DS1, Nema17 steppers
 
 The firmware can be compiled using the mBed online compiler.
 
-(Work in progress)
+The current version of the firmware uses the the BNO055 IMU. There is also code for integrating with LSM9DS1, but I recommend using a sensor that also does the sensor fusion (Like the BNO055). This makes the implementation a lot easier, since you don't have to worry about accelerometer noise filtering and kalmanfiltering / sensor fusion.  
+
+##Videos:
+* First test (not having executed the calibration steps): https://www.youtube.com/watch?v=KoEledFhL0o
+* Second test (after calibration - balancing on the sofa :)): https://www.youtube.com/watch?v=54taJUBaHX8
+
+
 
 ##Parts list:
 
@@ -12,7 +18,7 @@ The firmware can be compiled using the mBed online compiler.
 * 1 x LSM9DS1 breakout (Sparkfun)
 * 1 x 3V regulator + capacitors (100uF/10uF)
 * 8 x AA Battery pack
-* 8 x NuMH batteries + charger
+* 8 x NiMH batteries + charger
 * 9V battery clip
 * On/off pushbutton switch (12mm mounting)
 * RC tyres. ID: X, width: Y

@@ -3,8 +3,11 @@
 
 #include "MicroBit.h"
 
-const int STEPPER_ON = 512;  // 50 % duty cycle makes a nice step pulse
-const int STEPPER_OFF = 0;
+// If you change step frequency, you will implicitly also change acceleration
+// If you change acceleration, you will - wait for it - change acceleration
+const float STEP_FREQUENCY = 4000; // kHz
+const float STEP_PERIOD = 1.0/STEP_FREQUENCY; 
+const float ACCELERATION = 8;
 
 typedef enum 
 {
@@ -16,18 +19,18 @@ class Motor
 {
 public:
     Motor(MicroBit & bit);
-    void Step(double period);
-
+    void Step();
+    void SetSpeed(float targetSpeed);
+    float Speed();
+    void SetDirection(STEP_DIRECTION direction) const;
+ 
 private:
     MicroBit & _bit;
     void SetPWMDutyCycle(int value) const;
     void SetPWMPeriod(int usValue) const;
-    void SetDirection(STEP_DIRECTION direction) const;
     
-    // Non-insane analog period range is 330 - 5000'ish
-    int ClampPeriod(int period);
-    int _periodMin;
-    int _periodMax;
+    float _speed;
+    float _targetSpeed;
 };
 
 

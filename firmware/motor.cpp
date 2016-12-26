@@ -1,11 +1,39 @@
+#include "mbed.h"
 #include "motor.h"
 
+
 Motor::Motor(MicroBit & bit)
-    : _bit(bit)
-    , _periodMin(300) // Shorter period == higher motor speed
-    , _periodMax(5000)
+    : _bit(bit),
+      _speed(0),
+      _targetSpeed(0)
 {
-    SetPWMDutyCycle(STEPPER_OFF);
+    // 50% duty cycle will make a nice step pulse
+    SetPWMDutyCycle(900);
+}
+
+void Motor::SetSpeed(float targetSpeed)
+{
+    _targetSpeed = targetSpeed;
+}
+
+float Motor::Speed()
+{
+    return _speed;
+}
+
+void Motor::Step()
+{
+    if ((_speed - _targetSpeed) > ACCELERATION)
+        _speed -= ACCELERATION;
+    else if ((_speed - _targetSpeed) < -ACCELERATION)
+        _speed += ACCELERATION;
+    else
+        _speed = _targetSpeed;
+ 
+    if ((_speed < 0.00005) && (_speed > -0.00005))
+        _speed = 0.00005; // Prevent int overflow in SetPWMPeriod. 
+        
+    SetPWMPeriod(abs(100000/_speed));
 }
 
 void Motor::SetPWMDutyCycle(int value) const
@@ -22,33 +50,7 @@ void Motor::SetPWMPeriod(int usValue) const
 
 void Motor::SetDirection(STEP_DIRECTION direction) const
 {
-    _bit.io.P13.setDigitalValue(direction);
-    _bit.io.P15.setDigitalValue(direction);
+    _bit.io.P8.setDigitalValue(direction);
+    _bit.io.P16.setDigitalValue(direction);
 }
   
-int Motor::ClampPeriod(int period)
-{
-    if (period < _periodMin)
-        return _periodMin;
-    else if (period > _periodMax)
-        return _periodMax;
-    return period;
-}
-
-void Motor::Step(double period)
-{
-    SetPWMDutyCycle(STEPPER_ON);
-
-    char buf[100];
-    if (period > 0)
-    {
-        SetDirection(REVERSE);
-    }
-    else 
-    {
-        SetDirection(FORWARD);
-    }
-    period = ClampPeriod(static_cast<int>(abs(period)));
-    SetPWMPeriod(abs(period));
-      
-}
